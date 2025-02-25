@@ -59,5 +59,5 @@ A avaliação do projeto será dividida em duas etapas:
 
 ---
 **Autores:**
-- Nome 1 - Matrícula
-- Nome 2 - Matrícula
+- Gustavo Cunha Kneip
+- Antônio Araujo de Brum
