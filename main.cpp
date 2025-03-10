@@ -2,12 +2,7 @@
 #include <fstream>
 #include <bitset>
 #include <cstring>
-
-enum class Politic {
-    RANDOM = 'R',
-    LRU = 'L',
-    FIFO = 'F'
-};
+#include "politic.cpp"
 
 int main(int argc, char* argv[]) {
     std::cout << "Number of arguments: " << argc << std::endl;

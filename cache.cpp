@@ -1,6 +1,7 @@
 #include <vector>
 #include "block.hpp"
 #include "address.hpp"
+#include "politic.cpp"
 
 class Cache {
     private:
@@ -8,13 +9,16 @@ class Cache {
         int CompulsoryMiss;
         int ConflictMiss;
         int CapacityMiss;
+        Politic Politica;
 
     public:
-        Cache(int n_sets, int assoc){
+        Cache(int n_sets, int assoc, Politic politica){
             Blocos.resize(n_sets);
             for(int i = 0; i < n_sets; i++){
                 Blocos[i].resize(assoc);
             }
+
+            Politica = politica;
         }
 
         Cache(int n_sets){
@@ -33,14 +37,15 @@ class Cache {
                     }
                 } else {
                     CompulsoryMiss++;
-                    Blocos[address.GetIndex()][i].Validate();
-                    Blocos[address.GetIndex()][i].SetTag(address.GetTag()); 
-                    Blocos[address.GetIndex()][i].ResetCounter();
+                    TreatMiss(address, i);
                     return false;
                 }
             }
         }
 
-
-
+        void TreatMiss(Address address, int tag){
+            Blocos[address.GetIndex()][tag].Validate();
+            Blocos[address.GetIndex()][tag].SetTag(address.GetTag());
+            Blocos[address.GetIndex()][tag].ResetCounter();
+        }
 };
