@@ -2,7 +2,8 @@
 
 class Block {
     private:
-        int Tag;        bool Valid;
+        int Tag;        
+        bool Valid;
 
     public:
         Block();  

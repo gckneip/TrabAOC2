@@ -18,14 +18,12 @@ int main(int argc, char* argv[]) {
     std::cerr << "Error: Expected at least 3 arguments.\n";
     return 1;
 }
-
-        char* end = nullptr;
         int nsets = std::stoi(argv[1]);
         int bsize = std::stoi(argv[2]);
         int assoc = std::stoi(argv[3]);
 
     std::cout << "numero de conjuntos: " << nsets << std::endl;
-    std::cout << "numero de bits de offset: " << bsize <<std::endl;
+    std::cout << "numero de bytes em um bloco: " << bsize <<std::endl;
     std::cout << "associatividade de " << assoc << " vias" << std::endl;
 
 
@@ -40,12 +38,14 @@ int main(int argc, char* argv[]) {
     char policy = argv[4][0]; 
     Address address = Address(); //criar construtor vazio
     int tag = 0;
-    int indice =0;
+    int indice = 0;
     int offset = 0;
     int offset_bits = static_cast<int>(std::log2(bsize)); // For 64-byte blocks, offset_bits = 6
     int index_bits = static_cast<int>(std::log2(nsets)); // For 16 sets, index_bits = 4
     Cache cache = Cache(nsets, assoc, policy);//modificar cache.hpp
 
+    std::cout << "bits de offset: " << offset_bits;
+    std::cout << "\nbits de índice: " << index_bits << "\n";
     int totalAccesses = 0;
     while(file.read(buffer, sizeof(buffer))){
     
@@ -55,17 +55,16 @@ int main(int argc, char* argv[]) {
     offset = palavra & ((1 << offset_bits) - 1);
     indice = (palavra >> offset_bits) & ((1 << index_bits) - 1);
     tag = palavra >> (offset_bits + index_bits);
-
     address.Update(tag, indice, offset);
 
     cache.FindBlock(address);
 
-    std::cout << palavra << " ";
+   // std::cout << palavra << " ";
     totalAccesses++;
     }
     file.close();
 
-    int compulsoryMiss =cache.GetMissCompulsory();
+    int compulsoryMiss = cache.GetMissCompulsory();
     int conflitMiss = cache.GetMissConflict();
     int capacityMiss = cache.GetMissCapacity();
 
@@ -73,11 +72,11 @@ int main(int argc, char* argv[]) {
 
     int totalHits = totalAccesses - totalMiss;
 
-    float hitRate = totalHits/totalAccesses;
-    float missRate = totalMiss/totalAccesses;
-    float compulsoryMissRate = compulsoryMiss/totalMiss;
-    float conflictMissRate = conflitMiss/totalMiss;
-    float capacityMissRate = capacityMiss/totalMiss;
+    float hitRate = (float)totalHits/(float)totalAccesses;
+    float missRate = (float)totalMiss/(float)totalAccesses;
+    float compulsoryMissRate = (float)compulsoryMiss/(float)totalMiss;
+    float conflictMissRate = (float)conflitMiss/(float)totalMiss;
+    float capacityMissRate = (float)capacityMiss/(float)totalMiss;
 
     if (argv[5][0] == '0'){
         std::cout 
@@ -86,10 +85,10 @@ int main(int argc, char* argv[]) {
         << "\nHit Rate: " << hitRate 
         << "\nMiss Rate: " << missRate 
         << "\nCompulsory Miss Rate: " << compulsoryMissRate 
-        << "\nConflict Miss Rate: " << conflictMissRate 
-        << "\nCapacity Miss Rate: " << capacityMissRate << std::endl;
+        << "\nConflict Miss Rate: " << capacityMissRate 
+        << "\nCapacity Miss Rate: " << conflictMissRate << std::endl;
     } else {
-        std::cout << totalAccesses << ", " << hitRate << ", " << missRate << ", " << compulsoryMissRate << ", " << conflictMissRate << ", " << capacityMissRate << std::endl;
+        std::cout << totalAccesses << ", " << hitRate << ", " << missRate << ", " << std::round(compulsoryMissRate * 100) / 100 << ", " << std::round(capacityMissRate * 100) / 100 << ", " << std::round(conflictMissRate * 100) / 100 << std::endl;
     }
     return 0;
 

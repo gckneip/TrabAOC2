@@ -6,8 +6,8 @@
 #include "../block.hpp"
 #include "../address.hpp"
 
-Cache::Cache(int n_sets, int assoc, char policy)
-: CompulsoryMiss(0), CapacityMiss(0), ConflictMiss(0){
+Cache::Cache(int n_sets, int assoc, char policy): 
+CompulsoryMiss(0), ConflictMiss(0), CapacityMiss(0){
     Blocos.resize(n_sets);
     for(int i = 0; i < n_sets; i++){
         Blocos[i].resize(assoc);
@@ -24,8 +24,8 @@ Cache::Cache(int n_sets, int assoc, char policy)
 
 void Cache::FindBlock(Address address){
     int index = address.GetIndex();
-    int assoc = Blocos[index].size();
-    for(int i = 0; i <= Blocos[index].size(); i++){
+    size_t assoc = Blocos[index].size();
+    for(size_t i = 0; i < Blocos[index].size(); i++){
         if(!Blocos[index][i].IsValid()){
             CompulsoryMiss++;
             TreatMiss(&Blocos[index][i], address.GetTag());
@@ -40,8 +40,10 @@ void Cache::FindBlock(Address address){
     SubstitutionPolicy(*this, address);
     if (assoc > 1){
         CapacityMiss++;
+        return;
     } else {
         ConflictMiss++;
+        return;
     }
 }
 
@@ -65,8 +67,9 @@ int Cache::GetMissCapacity() const{
 };
 
 void Random(Cache& cache, Address address){
+    std::srand(1);
     std::deque<Block>* vias = cache.GetBlocos(address.GetIndex()); //um ponteiro para uma fila
-    Block* currentBlock = &(*vias)[random() % (vias->size())];
+    Block* currentBlock = &(*vias)[std::rand() % (vias->size())];
     cache.TreatMiss(currentBlock, address.GetTag());
     return;
     };
