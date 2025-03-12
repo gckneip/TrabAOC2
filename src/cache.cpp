@@ -2,6 +2,7 @@
 #include <deque>
 #include <functional>
 #include <iostream>
+#include "../cache.hpp"
 #include "../block.hpp"
 #include "../address.hpp"
 
