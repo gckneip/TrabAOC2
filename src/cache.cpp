@@ -6,7 +6,8 @@
 #include "../block.hpp"
 #include "../address.hpp"
 
-Cache::Cache(int n_sets, int assoc, char policy){
+Cache::Cache(int n_sets, int assoc, char policy)
+: CompulsoryMiss(0), CapacityMiss(0), ConflictMiss(0){
     Blocos.resize(n_sets);
     for(int i = 0; i < n_sets; i++){
         Blocos[i].resize(assoc);
@@ -63,7 +64,6 @@ int Cache::GetMissCapacity() const{
     return CapacityMiss;
 };
 
-
 void Random(Cache& cache, Address address){
     std::deque<Block>* vias = cache.GetBlocos(address.GetIndex()); //um ponteiro para uma fila
     Block* currentBlock = &(*vias)[random() % (vias->size())];
@@ -92,4 +92,3 @@ void HitLRU(Cache& cache, Address address, int via){
     vias->erase(it);
     vias->push_back(temp);
 }
-

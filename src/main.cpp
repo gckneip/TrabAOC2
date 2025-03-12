@@ -2,6 +2,7 @@
 #include <fstream>
 #include <bitset>
 #include <cstring>
+#include <cmath>  
 #include "../address.hpp"
 #include "../block.hpp"
 #include "../cache.hpp"
@@ -41,14 +42,20 @@ int main(int argc, char* argv[]) {
     int tag = 0;
     int indice =0;
     int offset = 0;
-    
+    int offset_bits = static_cast<int>(std::log2(bsize)); // For 64-byte blocks, offset_bits = 6
+    int index_bits = static_cast<int>(std::log2(nsets)); // For 16 sets, index_bits = 4
     Cache cache = Cache(nsets, assoc, policy);//modificar cache.hpp
 
     int totalAccesses = 0;
     while(file.read(buffer, sizeof(buffer))){
     
     int palavra = (buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8) | (buffer[3]);    
+    
     //encontrar tag, índice e offset
+    offset = palavra & ((1 << offset_bits) - 1);
+    indice = (palavra >> offset_bits) & ((1 << index_bits) - 1);
+    tag = palavra >> (offset_bits + index_bits);
+
     address.Update(tag, indice, offset);
 
     cache.FindBlock(address);
@@ -73,9 +80,16 @@ int main(int argc, char* argv[]) {
     float capacityMissRate = capacityMiss/totalMiss;
 
     if (argv[5][0] == '0'){
-        //formato livre
+        std::cout 
+        << "\nTotal de acessos: " << totalAccesses 
+        << "\nTotal de Misses: " << totalMiss 
+        << "\nHit Rate: " << hitRate 
+        << "\nMiss Rate: " << missRate 
+        << "\nCompulsory Miss Rate: " << compulsoryMissRate 
+        << "\nConflict Miss Rate: " << conflictMissRate 
+        << "\nCapacity Miss Rate: " << capacityMissRate << std::endl;
     } else {
-        std::cout << totalAccesses << ", " << hitRate << ", " << missRate << ", " << compulsoryMiss << ", " << conflictMissRate << ", " << capacityMissRate << std::endl;
+        std::cout << totalAccesses << ", " << hitRate << ", " << missRate << ", " << compulsoryMissRate << ", " << conflictMissRate << ", " << capacityMissRate << std::endl;
     }
     return 0;
 
