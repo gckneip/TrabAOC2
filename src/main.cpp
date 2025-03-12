@@ -38,6 +38,10 @@ int main(int argc, char* argv[]) {
     char buffer[4];
     char policy = argv[4][0]; 
     Address address = Address(); //criar construtor vazio
+    int tag = 0;
+    int indice =0;
+    int offset = 0;
+    
     Cache cache = Cache(nsets, assoc, policy);//modificar cache.hpp
 
     int totalAccesses = 0;
@@ -45,7 +49,7 @@ int main(int argc, char* argv[]) {
     
     int palavra = (buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8) | (buffer[3]);    
     //encontrar tag, índice e offset
-    address.setAll(tag, indice, offset);
+    address.Update(tag, indice, offset);
 
     cache.FindBlock(address);
 

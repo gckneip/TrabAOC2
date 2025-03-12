@@ -1,25 +1,32 @@
 #include <vector>
+#include <deque>
+#include <functional>
 #include "block.hpp"
 #include "address.hpp"
 
+class Cache;
+
+void Random(Cache& cache, Address address);
+void FIFO(Cache& cache, Address address);
+void LRU(Cache& cache, Address address);
+
+void HitLRU(Cache& cache, Address address, int via);
+
 class Cache {
     private:
-        std::vector<std::vector<Block>> Blocos;
-
+        std::vector<std::deque<Block>> Blocos;
+        std::function<void(Cache&, Address)> SubstitutionPolicy;
+        std::function<void(Cache&, Address, int)> Hit;
+        int CompulsoryMiss;
+        int ConflictMiss;
+        int CapacityMiss;
     public:
-        Cache(int n_sets, int assoc){
-            Blocos.resize(n_sets);
-            for(int i = 0; i < n_sets; i++){
-                Blocos[i].resize(assoc);
-            }
-        }
+        Cache(int n_sets, int assoc, char policy);
 
-        Cache(int n_sets){
-            Blocos.resize(n_sets);
-        }
-
-        void FindBlock(Address address){
-            
-        }
-
+        void FindBlock(Address address);
+        void TreatMiss(Block* bloco, int tag);
+        std::deque<Block> *GetBlocos (int index);
+        int GetMissCompulsory() const;
+        int GetMissConflict() const;
+        int GetMissCapacity() const;
 };

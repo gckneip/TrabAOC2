@@ -7,10 +7,9 @@ class Address {
         int Offset;
     public:
     
-    Address(int tag, int index, int offset);
+    Address();
 
+    void Update(int tag, int index, int offset); 
     int GetTag() const;
-    int GetIndex() const;
-    //int GetOffset() const;
-    
+    int GetIndex() const;    
 };
