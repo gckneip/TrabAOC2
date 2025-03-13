@@ -5,6 +5,7 @@
 #include "../cache.hpp"
 #include "../block.hpp"
 #include "../address.hpp"
+#include <cstdint>
 
 Cache::Cache(int n_sets, int assoc, char policy): 
 CompulsoryMiss(0), ConflictMiss(0), CapacityMiss(0){
@@ -46,12 +47,12 @@ void Cache::FindBlock(Address address){
     }
 }
 
-void Cache::TreatMiss(Block* bloco, u_int32_t tag){
+void Cache::TreatMiss(Block* bloco, uint32_t tag){
     bloco->Validate();
     bloco->SetTag(tag);
 }
 
-std::deque<Block> *Cache::GetBlocos (u_int32_t index){
+std::deque<Block> *Cache::GetBlocos (uint32_t index){
     return &Blocos[index];
 }
 

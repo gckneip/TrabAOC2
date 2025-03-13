@@ -7,6 +7,7 @@
 #include "../block.hpp"
 #include "../cache.hpp"
 #include <iomanip>
+#include <cstdint>
 
 
 int main(int argc, char* argv[]) {
@@ -27,16 +28,16 @@ int main(int argc, char* argv[]) {
     unsigned char buffer[4];
     char policy = argv[4][0]; 
     Address address = Address(); 
-    u_int32_t tag = 0;
-    u_int32_t indice = 0;
-    u_int32_t offset = 0;
-    u_int32_t offset_bits = static_cast<int>(std::log2(bsize)); 
-    u_int32_t index_bits = static_cast<int>(std::log2(nsets)); 
+    uint32_t tag = 0;
+    uint32_t indice = 0;
+    uint32_t offset = 0;
+    uint32_t offset_bits = static_cast<int>(std::log2(bsize)); 
+    uint32_t index_bits = static_cast<int>(std::log2(nsets)); 
     Cache cache = Cache(nsets, assoc, policy);
 
     int totalAccesses = 0;
     while(file.read(reinterpret_cast<char*>(buffer), sizeof(buffer))){
-        u_int32_t palavra = (buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8) | (buffer[3]);    
+        uint32_t palavra = (buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8) | (buffer[3]);    
 
         offset = palavra & ((1 << offset_bits) - 1);
         indice = (palavra >> offset_bits) & ((1U << index_bits) - 1);

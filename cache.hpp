@@ -3,7 +3,7 @@
 #include <functional>
 #include "block.hpp"
 #include "address.hpp"
-#include <iostream>
+#include <cstdint>
 
 class Cache;
 
@@ -25,8 +25,8 @@ class Cache {
         Cache(int n_sets, int assoc, char policy);
 
         void FindBlock(Address address);
-        void TreatMiss(Block* bloco, u_int32_t tag);
-        std::deque<Block> *GetBlocos (u_int32_t index);
+        void TreatMiss(Block* bloco, uint32_t tag);
+        std::deque<Block> *GetBlocos (uint32_t index);
         int GetMissCompulsory() const;
         int GetMissConflict() const;
         int GetMissCapacity() const;

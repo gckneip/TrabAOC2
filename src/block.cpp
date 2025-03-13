@@ -1,5 +1,5 @@
 #include "../block.hpp" 
-#include <iostream>
+#include <cstdint>
 
 Block::Block() : Tag(0), Valid(false) {}
 
@@ -7,6 +7,6 @@ void Block::Validate() { Valid = true; }
 
 bool Block::IsValid() const { return Valid; }
 
-void Block::SetTag(u_int32_t tag) { Tag = tag; }
+void Block::SetTag(uint32_t tag) { Tag = tag; }
 
-bool Block::CompareTag(u_int32_t tag) const { return Tag == tag; }
+bool Block::CompareTag(uint32_t tag) const { return Tag == tag; }
