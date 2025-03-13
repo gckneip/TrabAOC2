@@ -87,10 +87,11 @@ void Random(Cache *cache, Address address){
 
 void FIFO(Cache* cache, Address address){
     std::deque<Block>* vias = cache->GetBlocos(address.GetIndex()); //um ponteiro para uma fila
-    Block& frontBlock = vias->front();
-    cache->TreatMiss(&frontBlock, address.GetTag());
-    vias->push_back(frontBlock);
+    //Block& frontBlock = vias->front();
+    Block newBlock = Block();
+    cache->TreatMiss(&newBlock, address.GetTag());
     vias->pop_front();
+    vias->push_back(newBlock);
     return;
 };
 
@@ -104,5 +105,15 @@ void HitLRU(Cache *cache, Address address, int via){
     auto it = vias->begin()+via;
     Block& temp = *it;
     vias->erase(it);
-    vias->push_back(temp);
+    for(size_t i = 0; i < vias->size(); i++){
+        if(!((*vias)[i].IsValid())){
+            (*vias)[i] = temp;
+            return;
+        } else {
+            vias->push_back(temp);
+            return;
+        }
+    }
+    
+
 }

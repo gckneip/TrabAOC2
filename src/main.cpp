@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    char buffer[4];
+    unsigned char buffer[4];
     char policy = argv[4][0]; 
     Address address = Address(); //criar construtor vazio
     u_int32_t tag = 0;
@@ -48,12 +48,12 @@ int main(int argc, char* argv[]) {
     // std::cout << "bits de offset: " << offset_bits;
     // std::cout << "\nbits de índice: " << index_bits << "\n";
     int totalAccesses = 0;
-    while(file.read(buffer, sizeof(buffer))){
+    while(file.read(reinterpret_cast<char*>(buffer), sizeof(buffer))){
         u_int32_t palavra = (buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8) | (buffer[3]);    
 
         //encontrar tag, índice e offset
         offset = palavra & ((1 << offset_bits) - 1);
-        indice = (palavra >> offset_bits) & ((1 << index_bits) - 1);
+        indice = (palavra >> offset_bits) & ((1U << index_bits) - 1);
         tag = palavra >> (offset_bits + index_bits);
         address.Update(tag, indice, offset);
 
