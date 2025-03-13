@@ -42,7 +42,19 @@ A saída do simulador consiste em um relatório com estatísticas de desempenho:
 - `Taxa de miss de capacidade`
 - `Taxa de miss de conflito`
 
-Se `flag_saida = 0`, a saída pode ser formatada livremente com textos explicativos. Se `flag_saida = 1`, a saída segue o formato:
+Se `flag_saida = 0`, a saída será através de uma tabela no prompt: 
+```
+Métrica                      Valor               
+--------------------------------------------
+Total de acessos:             186676              
+Total de Misses:              79226               
+Hit Rate:                     0.575596            
+Miss Rate:                    0.424404            
+Compulsory Miss Rate:         0.000403908         
+Capacity Miss Rate:           79194               
+Conflict Miss Rate:           0  
+```
+Se `flag_saida = 1`, a saída segue o formato:
 ```
 <total_acessos>, <taxa_hit>, <taxa_miss>, <taxa_miss_compulsório>, <taxa_miss_capacidade>, <taxa_miss_conflito>
 ```
