@@ -79,15 +79,14 @@ bool Cache::IsCacheFull() {
 
 void Random(Cache *cache, Address address){
     std::srand(1);
-    std::deque<Block>* vias = cache->GetBlocos(address.GetIndex()); //um ponteiro para uma fila
+    std::deque<Block>* vias = cache->GetBlocos(address.GetIndex()); 
     Block* currentBlock = &(*vias)[std::rand() % (vias->size())];
     cache->TreatMiss(currentBlock, address.GetTag());
     return;
     };
 
 void FIFO(Cache* cache, Address address){
-    std::deque<Block>* vias = cache->GetBlocos(address.GetIndex()); //um ponteiro para uma fila
-    //Block& frontBlock = vias->front();
+    std::deque<Block>* vias = cache->GetBlocos(address.GetIndex());
     Block newBlock = Block();
     cache->TreatMiss(&newBlock, address.GetTag());
     vias->pop_front();
@@ -101,7 +100,7 @@ void LRU(Cache *cache, Address address){
 };
 
 void HitLRU(Cache *cache, Address address, int via){
-    std::deque<Block>* vias = cache->GetBlocos(address.GetIndex()); //um ponteiro para uma fila
+    std::deque<Block>* vias = cache->GetBlocos(address.GetIndex()); 
     auto it = vias->begin()+via;
     Block temp = *it;
     vias->erase(it);
