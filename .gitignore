@@ -3,3 +3,5 @@ build/
 cache_simulator
 
 *.bin
+
+.vscode/
