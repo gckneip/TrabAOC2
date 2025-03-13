@@ -1,15 +1,16 @@
 #pragma once
+#include <iostream>
 
 class Address {
     private:
-        int Tag;
-        int Index;
-        int Offset;
+        u_int32_t Tag;
+        u_int32_t Index;
+        u_int32_t Offset;
     public:
     
     Address();
 
-    void Update(int tag, int index, int offset); 
-    int GetTag() const;
-    int GetIndex() const;    
+    void Update(u_int32_t tag, u_int32_t index, u_int32_t offset); 
+    u_int32_t GetTag() const;
+    u_int32_t GetIndex() const;    
 };
