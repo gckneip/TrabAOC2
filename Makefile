@@ -14,8 +14,11 @@ all: $(EXEC)
 $(EXEC): $(OBJ)
 	$(CXX) $(OBJ) -o $(EXEC)
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(BUILD_DIR):
+	mkdir $(BUILD_DIR)
 
 clean:
 	rm -rf $(BUILD_DIR)/*.o $(EXEC)
