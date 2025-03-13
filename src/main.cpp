@@ -64,14 +64,16 @@ int main(int argc, char* argv[]) {
     float capacityMissRate = (float)capacityMiss/(float)totalMiss;
 
     if (argv[5][0] == '0'){
-        std::cout 
-        << "\nTotal de acessos: " << totalAccesses 
-        << "\nTotal de Misses: " << totalMiss 
-        << "\nHit Rate: " << hitRate 
-        << "\nMiss Rate: " << missRate 
-        << "\nCompulsory Miss Rate: " << compulsoryMissRate 
-        << "\nCapacity Miss Rate: " << capacityMiss 
-        << "\nConflict Miss Rate: " << conflictMissRate << std::endl; 
+    std::cout << std::setw(30) << std::left << "Métrica" << std::setw(20) << std::left << "Valor" << std::endl;
+    std::cout << "--------------------------------------------" << std::endl;
+    
+    std::cout << std::setw(30) << std::left << "Total de acessos:" << std::setw(20) << totalAccesses << std::endl;
+    std::cout << std::setw(30) << std::left << "Total de Misses:" << std::setw(20) << totalMiss << std::endl;
+    std::cout << std::setw(30) << std::left << "Hit Rate:" << std::setw(20) << hitRate << std::endl;
+    std::cout << std::setw(30) << std::left << "Miss Rate:" << std::setw(20) << missRate << std::endl;
+    std::cout << std::setw(30) << std::left << "Compulsory Miss Rate:" << std::setw(20) << compulsoryMissRate << std::endl;
+    std::cout << std::setw(30) << std::left << "Capacity Miss Rate:" << std::setw(20) << capacityMiss << std::endl;
+    std::cout << std::setw(30) << std::left << "Conflict Miss Rate:" << std::setw(20) << conflictMissRate << std::endl; 
     } else {
         std::cout << std::fixed << std::setprecision(4);
         std::cout << totalAccesses << ", " 
