@@ -7,7 +7,7 @@ Este projeto consiste na implementação de um simulador de caches parametrizáv
 O simulador foi desenvolvido em uma linguagem de programação de livre escolha e recebe os parâmetros de configuração via linha de comando.
 
 ## Como Executar
-Para executar o simulador, primeiramente rode o makefile para compilar os arquivos do programa:
+Para executar o simulador, primeiramente rode o makefile para compilar os arquivos do programa (Lembre-se de [Baixar a ferramentado do makefile](https://medium.com/@samsorrahman/how-to-run-a-makefile-in-windows-b4d115d7c516) caso estiver trabalhando no windows):
 ```sh
 make
 ```
