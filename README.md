@@ -7,7 +7,11 @@ Este projeto consiste na implementação de um simulador de caches parametrizáv
 O simulador foi desenvolvido em uma linguagem de programação de livre escolha e recebe os parâmetros de configuração via linha de comando.
 
 ## Como Executar
-Para executar o simulador, utilize o seguinte formato de linha de comando:
+Para executar o simulador, primeiramente rode o makefile para compilar os arquivos do programa:
+```sh
+make
+```
+Em seguida utilize o seguinte formato de linha de comando:
 ```sh
 cache_simulator <nsets> <bsize> <assoc> <substituição> <flag_saida> arquivo_de_entrada
 ```
@@ -42,21 +46,6 @@ Se `flag_saida = 0`, a saída pode ser formatada livremente com textos explicati
 ```
 <total_acessos>, <taxa_hit>, <taxa_miss>, <taxa_miss_compulsório>, <taxa_miss_capacidade>, <taxa_miss_conflito>
 ```
-
-## Formato do Arquivo de Entrada
-O arquivo de entrada contém os endereços de acesso à cache em formato binário (big endian, 32 bits cada endereço). Quatro arquivos de teste são fornecidos (`bin_100.bin`, `bin_1000.bin`, `bin_10000.bin` e `bin_186676.bin`), além de versões `.txt` para visualização dos valores.
-
-## Compilação e Dependências
-Se houver bibliotecas específicas necessárias para a compilação e execução, listar abaixo.
-
-## Envio do Código
-Os arquivos fonte e executáveis (se houver) devem ser compactados em um arquivo `.zip`, nomeado com a matrícula de um dos membros do grupo (exemplo: `12345678.zip`), e enviados via e-aula.
-
-## Avaliação
-A avaliação do projeto será dividida em duas etapas:
-1. **Automatizada (Peso 5):** Identificação de similaridade entre códigos e execução de benchmarks.
-2. **Apresentação (Peso 5):** Apresentação do código para o professor, onde cada membro deve responder corretamente sobre o funcionamento do simulador.
-
 ---
 **Autores:**
 - Gustavo Cunha Kneip
