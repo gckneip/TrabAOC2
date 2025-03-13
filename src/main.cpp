@@ -11,17 +11,27 @@
 
 
 int main(int argc, char* argv[]) {
-    if (argc < 4) {  
-        std::cerr << "Error: Expected at least 3 arguments.\n";
+    if (argc != 7) {  
+        std::cerr << "Erro: Espera-se 7 argumentos\n";
         return 1;
     }
         int nsets = std::stoi(argv[1]);
         int bsize = std::stoi(argv[2]);
         int assoc = std::stoi(argv[3]);
 
+        if( nsets <= 0 || bsize <= 0 || assoc <= 0){
+            std::cerr << "Erro: Nenhum dos argumentos pode ser 0\n";
+            return 1;
+        }
+
+        if(argv[5][0] != '0' && argv[5][0] != '1'){
+            std::cerr << "Erro: Argumento de saída deve ser 0 ou 1\n";
+            return 1;
+        }
+
     std::ifstream file(argv[6], std::ios::binary);
     if (!file) {
-        std::cerr << "Error opening file!\n";
+        std::cerr << "Erro ao abrir arquivo!\n";
         return 1;
     }
 

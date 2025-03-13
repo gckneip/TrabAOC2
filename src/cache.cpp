@@ -20,23 +20,27 @@ CompulsoryMiss(0), ConflictMiss(0), CapacityMiss(0){
         default: std::cerr << "Política de substituição inválida" << std::endl;
         break;
     }
+    std::srand(1);
 
 }
 
 void Cache::FindBlock(Address address){
     int index = address.GetIndex();
+    int tag = address.GetTag();
+
     for(size_t i = 0; i < Blocos[index].size(); i++){
         if(!Blocos[index][i].IsValid()){
             CompulsoryMiss++;
-            TreatMiss(&(Blocos[index][i]), address.GetTag());
+            TreatMiss(&(Blocos[index][i]), tag);
             return;
         } else {
-            if(Blocos[index][i].CompareTag(address.GetTag())){
+            if(Blocos[index][i].CompareTag(tag)){
                 Hit(this, address, i);
                 return;
             } 
         }
     }
+
     SubstitutionPolicy(this, address);
     if (IsCacheFull()){
         CapacityMiss++;
@@ -77,14 +81,12 @@ bool Cache::IsCacheFull() {
     return true; 
 }
 
-
 void Random(Cache *cache, Address address){
-    std::srand(1);
     std::deque<Block>* vias = cache->GetBlocos(address.GetIndex()); 
-    Block* currentBlock = &(*vias)[std::rand() % (vias->size())];
+    Block* currentBlock = &(*vias)[(size_t)(std::rand()) % (vias->size())];
     cache->TreatMiss(currentBlock, address.GetTag());
     return;
-    };
+};
 
 void FIFO(Cache* cache, Address address){
     std::deque<Block>* vias = cache->GetBlocos(address.GetIndex());
