@@ -103,7 +103,7 @@ void LRU(Cache *cache, Address address){
 void HitLRU(Cache *cache, Address address, int via){
     std::deque<Block>* vias = cache->GetBlocos(address.GetIndex()); //um ponteiro para uma fila
     auto it = vias->begin()+via;
-    Block& temp = *it;
+    Block temp = *it;
     vias->erase(it);
     for(size_t i = 0; i < vias->size(); i++){
         if(!((*vias)[i].IsValid())){
@@ -114,6 +114,4 @@ void HitLRU(Cache *cache, Address address, int via){
             return;
         }
     }
-    
-
 }
