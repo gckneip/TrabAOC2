@@ -1,8 +1,9 @@
 #pragma once 
+#include <iostream>
 
 class Block {
     private:
-        int Tag;        
+        u_int32_t Tag;        
         bool Valid;
 
     public:
@@ -10,6 +11,6 @@ class Block {
 
         void Validate();
         bool IsValid() const;
-        void SetTag(int tag);
-        bool CompareTag(int tag) const;
+        void SetTag(u_int32_t tag);
+        bool CompareTag(u_int32_t tag) const;
 };

@@ -11,7 +11,7 @@ SRC = $(SRC_DIR)/cache.cpp $(SRC_DIR)/block.cpp $(SRC_DIR)/address.cpp $(SRC_DIR
 OBJ = $(SRC:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
 
 # Output executable
-EXEC = hipermegaCache
+EXEC = cache_simulator
 
 # Default target: build everything
 all: $(EXEC)

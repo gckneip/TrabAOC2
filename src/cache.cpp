@@ -13,9 +13,9 @@ CompulsoryMiss(0), ConflictMiss(0), CapacityMiss(0){
         Blocos[i].resize(assoc);
     }
     switch (policy){
-        case 'R' : SubstitutionPolicy = Random; Hit = [](Cache, Address, int) {}; break;
+        case 'R' : SubstitutionPolicy = Random; Hit = [](Cache*, Address, int) {}; break;
         case 'L' : SubstitutionPolicy = LRU; Hit = HitLRU; break;
-        case 'F' : SubstitutionPolicy = FIFO; Hit = [](Cache, Address, int) {}; break;
+        case 'F' : SubstitutionPolicy = FIFO; Hit = [](Cache*, Address, int) {}; break;
         default: std::cerr << "Política de substituição inválida" << std::endl;
         break;
     }
@@ -24,21 +24,20 @@ CompulsoryMiss(0), ConflictMiss(0), CapacityMiss(0){
 
 void Cache::FindBlock(Address address){
     int index = address.GetIndex();
-    size_t assoc = Blocos[index].size();
     for(size_t i = 0; i < Blocos[index].size(); i++){
         if(!Blocos[index][i].IsValid()){
             CompulsoryMiss++;
-            TreatMiss(&Blocos[index][i], address.GetTag());
+            TreatMiss(&(Blocos[index][i]), address.GetTag());
             return;
         } else {
             if(Blocos[index][i].CompareTag(address.GetTag())){
-                Hit(*this, address, i);
+                Hit(this, address, i);
                 return;
             } 
         }
     }
-    SubstitutionPolicy(*this, address);
-    if (assoc > 1){
+    SubstitutionPolicy(this, address);
+    if (IsCacheFull()){
         CapacityMiss++;
         return;
     } else {
@@ -47,12 +46,12 @@ void Cache::FindBlock(Address address){
     }
 }
 
-void Cache::TreatMiss(Block* bloco, int tag){
+void Cache::TreatMiss(Block* bloco, u_int32_t tag){
     bloco->Validate();
     bloco->SetTag(tag);
 }
 
-std::deque<Block> *Cache::GetBlocos (int index){
+std::deque<Block> *Cache::GetBlocos (u_int32_t index){
     return &Blocos[index];
 }
 
@@ -66,32 +65,44 @@ int Cache::GetMissCapacity() const{
     return CapacityMiss;
 };
 
-void Random(Cache& cache, Address address){
+bool Cache::IsCacheFull() {
+    for (const auto& set : Blocos) { 
+        for (const auto& block : set) {  
+            if (!block.IsValid()) {  
+                return false;  
+            }
+        }
+    }
+    return true; 
+}
+
+
+void Random(Cache *cache, Address address){
     std::srand(1);
-    std::deque<Block>* vias = cache.GetBlocos(address.GetIndex()); //um ponteiro para uma fila
+    std::deque<Block>* vias = cache->GetBlocos(address.GetIndex()); //um ponteiro para uma fila
     Block* currentBlock = &(*vias)[std::rand() % (vias->size())];
-    cache.TreatMiss(currentBlock, address.GetTag());
+    cache->TreatMiss(currentBlock, address.GetTag());
     return;
     };
 
-void FIFO(Cache& cache, Address address){
-    std::deque<Block>* vias = cache.GetBlocos(address.GetIndex()); //um ponteiro para uma fila
-    Block newBlock = vias->front();
-    cache.TreatMiss(&newBlock, address.GetTag());
-    vias->push_back(newBlock);
+void FIFO(Cache* cache, Address address){
+    std::deque<Block>* vias = cache->GetBlocos(address.GetIndex()); //um ponteiro para uma fila
+    Block& frontBlock = vias->front();
+    cache->TreatMiss(&frontBlock, address.GetTag());
+    vias->push_back(frontBlock);
     vias->pop_front();
     return;
 };
 
-void LRU(Cache& cache, Address address){
+void LRU(Cache *cache, Address address){
     FIFO(cache, address);
     return;
 };
 
-void HitLRU(Cache& cache, Address address, int via){
-    std::deque<Block>* vias = cache.GetBlocos(address.GetIndex()); //um ponteiro para uma fila
+void HitLRU(Cache *cache, Address address, int via){
+    std::deque<Block>* vias = cache->GetBlocos(address.GetIndex()); //um ponteiro para uma fila
     auto it = vias->begin()+via;
-    Block temp = *it;
+    Block& temp = *it;
     vias->erase(it);
     vias->push_back(temp);
 }

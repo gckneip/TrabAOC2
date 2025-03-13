@@ -3,20 +3,21 @@
 #include <functional>
 #include "block.hpp"
 #include "address.hpp"
+#include <iostream>
 
 class Cache;
 
-void Random(Cache& cache, Address address);
-void FIFO(Cache& cache, Address address);
-void LRU(Cache& cache, Address address);
+void Random(Cache* cache, Address address);
+void FIFO(Cache* cache, Address address);
+void LRU(Cache* cache, Address address);
 
-void HitLRU(Cache& cache, Address address, int via);
+void HitLRU(Cache* cache, Address address, int via);
 
 class Cache {
     private:
         std::vector<std::deque<Block>> Blocos;
-        std::function<void(Cache&, Address)> SubstitutionPolicy;
-        std::function<void(Cache&, Address, int)> Hit;
+        std::function<void(Cache*, Address)> SubstitutionPolicy;
+        std::function<void(Cache*, Address, int)> Hit;
         int CompulsoryMiss;
         int ConflictMiss;
         int CapacityMiss;
@@ -24,9 +25,10 @@ class Cache {
         Cache(int n_sets, int assoc, char policy);
 
         void FindBlock(Address address);
-        void TreatMiss(Block* bloco, int tag);
-        std::deque<Block> *GetBlocos (int index);
+        void TreatMiss(Block* bloco, u_int32_t tag);
+        std::deque<Block> *GetBlocos (u_int32_t index);
         int GetMissCompulsory() const;
         int GetMissConflict() const;
         int GetMissCapacity() const;
+        bool IsCacheFull(); 
 };
