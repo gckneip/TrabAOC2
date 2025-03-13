@@ -5,3 +5,5 @@ cache_simulator
 *.bin
 
 .vscode/
+
+*.exe
